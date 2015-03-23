@@ -3,14 +3,12 @@
 %define		plugin	flexslider
 Summary:	Fully responsive jQuery slider toolkit
 Name:		jquery-%{plugin}
-Version:	2.1
-Release:	2
+Version:	2.4.0
+Release:	1
 License:	GPL v2
 Group:		Applications/WWW
-Source0:	https://github.com/woothemes/FlexSlider/archive/version/2.1.tar.gz?/%{plugin}-%{version}.tgz
-# Source0-md5:	600b83649e1cb12657e84170da605a46
-Patch0:		https://github.com/Dizzzy/FlexSlider/commit/6a171c4c1b80edc3df10cfef710818107d5f7207.patch
-# Patch0-md5:	54612e491caf02a96e688cf51eef5d70
+Source0:	https://github.com/woothemes/FlexSlider/archive/version/%{version}/%{plugin}-%{version}.tar.gz
+# Source0-md5:	47f3f37f14bad12fbaac3f624ceaeabf
 URL:		http://www.woothemes.com/flexslider/
 BuildRequires:	closure-compiler
 BuildRequires:	js
@@ -26,7 +24,6 @@ An awesome, fully responsive jQuery slider plugin.
 
 %prep
 %setup -q -n FlexSlider-version-%{version}
-%patch0 -p1
 
 %build
 install -d build
