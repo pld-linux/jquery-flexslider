@@ -12,6 +12,7 @@ Source0:	https://github.com/woothemes/FlexSlider/archive/version/%{version}/%{pl
 URL:		http://www.woothemes.com/flexslider/
 BuildRequires:	closure-compiler
 BuildRequires:	js
+BuildRequires:	yuicompressor
 BuildRequires:	rpmbuild(macros) >= 1.553
 Requires:	jquery >= 1.4.2
 BuildArch:	noarch
@@ -39,6 +40,16 @@ for js in jquery.%{plugin}.js; do
 %endif
 done
 
+# pack .css
+for css in %{plugin}.css; do
+	out=build/${css#*/jquery.}
+%if 0%{!?debug:1}
+	yuicompressor --charset UTF-8 $css -o $out
+%else
+	cp -p $css $out
+%endif
+done
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_appdir}
@@ -48,8 +59,9 @@ cp -p jquery.%{plugin}.js $RPM_BUILD_ROOT%{_appdir}/%{plugin}-%{version}.js
 ln -s %{plugin}-%{version}.js $RPM_BUILD_ROOT%{_appdir}/%{plugin}.src.js
 ln -s %{plugin}-%{version}.min.js $RPM_BUILD_ROOT%{_appdir}/%{plugin}.js
 
-cp -p %{plugin}.css $RPM_BUILD_ROOT%{_appdir}/%{plugin}-%{version}.css
-ln -s %{plugin}-%{version}.css $RPM_BUILD_ROOT%{_appdir}/%{plugin}.css
+cp -p build/%{plugin}.css $RPM_BUILD_ROOT%{_appdir}/%{plugin}-%{version}.min.css
+cp -p %{plugin}.css $RPM_BUILD_ROOT%{_appdir}/%{plugin}-%{version}.src.css
+ln -s %{plugin}-%{version}.min.css $RPM_BUILD_ROOT%{_appdir}/%{plugin}.css
 
 cp -a images/* $RPM_BUILD_ROOT%{_appdir}
 
